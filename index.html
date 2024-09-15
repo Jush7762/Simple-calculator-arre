@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arithmetic and Geometric Means Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      background-color: #fff;
+      padding: 20px;
+      margin: 0 auto;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="number"] {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      margin-top: 20px;
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    .result p {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+
+    .answer {
+      color: #28a745;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .back-button {
+      width: auto;
+      padding: 10px;
+      background-color: #17a2b8;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    .back-button:hover {
+      background-color: #138496;
+    }
+
+    .solution {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #e9ecef;
+      border-radius: 10px;
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    .solution p {
+      margin: 10px 0;
+      font-size: 16px;
+      opacity: 0;
+      animation: textReveal 1s ease-in-out forwards;
+      animation-delay: var(--delay);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes textReveal {
+      0% { opacity: 0; transform: translateY(15px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div id="mainPage" class="container">
+    <h1>Arithmetic and Geometric Means Calculator</h1>
+    <button onclick="showPage('arithmeticPage')">Arithmetic Means</button>
+    <button onclick="showPage('geometricPage')">Geometric Means</button>
+  </div>
+
+  <!-- Arithmetic Pages -->
+  <div id="arithmeticPage" class="container hidden">
+    <h1>Arithmetic Means Calculator</h1>
+    <button onclick="showPage('findTermPage')">Find Term</button>
+    <button onclick="showPage('findDPage')">Find d</button>
+    <button onclick="showPage('sumAllPage')">Sum of All Terms</button>
+    <button class="back-button" onclick="showPage('mainPage')">Back to Main</button>
+  </div>
+
+  <div id="findTermPage" class="container hidden">
+    <h1>Find Term</h1>
+    <form id="findTermForm">
+      <label for="a1Term">First term (a₁):</label>
+      <input type="number" id="a1Term" required>
+      <label for="dTerm">Common difference (d):</label>
+      <input type="number" id="dTerm" required>
+      <label for="nTerm">Term number (n):</label>
+      <input type="number" id="nTerm" required>
+      <button type="button" onclick="calculateTerm()">Calculate</button>
+    </form>
+    <div id="resultTerm" class="result"></div>
+    <div id="solutionTerm" class="solution hidden">
+      <p>Formula: aₙ = a₁ + (n - 1) * d</p>
+      <p>Where:</p>
+      <p>aₙ = Term number n, a₁ = First term, d = Common difference, n = Term number</p>
+      <p>Substitute the values into the formula:</p>
+      <p>aₙ = (First term) + (Term number - 1) * (Common difference)</p>
+    </div>
+    <button class="back-button" onclick="showPage('arithmeticPage')">Back</button>
+  </div>
+
+  <div id="findDPage" class="container hidden">
+    <h1>Find d</h1>
+    <form id="findDForm">
+      <label for="a1D">First term (a₁):</label>
+      <input type="number" id="a1D" required>
+      <label for="anD">Last term (Aₙ):</label>
+      <input type="number" id="anD" required>
+      <label for="nD">Number of terms (n):</label>
+      <input type="number" id="nD" required>
+      <button type="button" onclick="calculateD()">Calculate</button>
+    </form>
+    <div id="resultD" class="result"></div>
+    <div id="solutionD" class="solution hidden">
+      <p>Formula: d = (Aₙ - a₁) / (n - 1)</p>
+      <p>Where:</p>
+      <p>Aₙ = Last term, a₁ = First term, n = Number of terms</p>
+      <p>Substitute the values into the formula:</p>
+      <p>d = (Last term - First term) / (Number of terms - 1)</p>
+    </div>
+    <button class="back-button" onclick="showPage('arithmeticPage')">Back</button>
+  </div>
+
+  <div id="sumAllPage" class="container hidden">
+    <h1>Sum of All Terms</h1>
+    <form id="sumAllForm">
+      <label for="a1Sum">First term (a₁):</label>
+      <input type="number" id="a1Sum" required>
+      <label for="dSum">Common difference (d):</label>
+      <input type="number" id="dSum" required>
+      <label for="nSum">Number of terms (n):</label>
+      <input type="number" id="nSum" required>
+      <button type="button" onclick="calculateSumAll()">Calculate</button>
+    </form>
+    <div id="resultSumAll" class="result"></div>
+    <div id="solutionSumAll" class="solution hidden">
+      <p>Formula: S = (n / 2) * (2 * a₁ + (n - 1) * d)</p>
+      <p>Where:</p>
+      <p>S = Sum of all terms, a₁ = First term, d = Common difference, n = Number of terms</p>
+      <p>Substitute the values into the formula:</p>
+      <p>S = (Number of terms / 2) * (2 * First term + (Number of terms - 1) * Common difference)</p>
+    </div>
+    <button class="back-button" onclick="showPage('arithmeticPage')">Back</button>
+  </div>
+
+<!-- Geometric Pages -->
+  <div id="geometricPage" class="container hidden">
+    <h1>Geometric Means Calculator</h1>
+    <button onclick="showPage('findTermGeomPage')">Find Term</button>
+    <button onclick="showPage('findRPage')">Find r</button>
+    <button onclick="showPage('sumAllGeomPage')">Sum of All Terms</button>
+    <button class="back-button" onclick="showPage('mainPage')">Back to Main</button>
+  </div>
+
+  <div id="findTermGeomPage" class="container hidden">
+    <h1>Find Term</h1>
+    <form id="findTermGeomForm">
+      <label for="a1GeomTerm">First term (a₁):</label>
+      <input type="number" id="a1GeomTerm" required>
+      <label for="rGeomTerm">Common ratio (r):</label>
+      <input type="number" id="rGeomTerm" required>
+      <label for="nGeomTerm">Term number (n):</label>
+      <input type="number" id="nGeomTerm" required>
+      <button type="button" onclick="calculateTermGeom()">Calculate</button>
+    </form>
+    <div id="resultTermGeom" class="result"></div>
+    <div id="solutionTermGeom" class="solution hidden">
+      <p>Formula: aₙ = a₁ * r^(n - 1)</p>
+      <p>Where:</p>
+      <p>aₙ = Term number n, a₁ = First term, r = Common ratio, n = Term number</p>
+      <p>Substitute the values into the formula:</p>
+      <p>aₙ = First term * (Common ratio)^(Term number - 1)</p>
+    </div>
+    <button class="back-button" onclick="showPage('geometricPage')">Back</button>
+  </div>
+
+  <div id="findRPage" class="container hidden">
+    <h1>Find r</h1>
+    <form id="findRForm">
+      <label for="a1R">First term (a₁):</label>
+      <input type="number" id="a1R" required>
+      <label for="anR">Last term (Aₙ):</label>
+      <input type="number" id="anR" required>
+      <label for="nR">Number of terms (n):</label>
+      <input type="number" id="nR" required>
+      <button type="button" onclick="calculateR()">Calculate</button>
+    </form>
+    <div id="resultR" class="result"></div>
+    <div id="solutionR" class="solution hidden">
+      <p>Formula: r = (Aₙ / a₁)^(1 / (n - 1))</p>
+      <p>Where:</p>
+      <p>Aₙ = Last term, a₁ = First term, n = Number of terms</p>
+      <p>Substitute the values into the formula:</p>
+      <p>r = (Last term / First term)^(1 / (Number of terms - 1))</p>
+    </div>
+    <button class="back-button" onclick="showPage('geometricPage')">Back</button>
+  </div>
+
+  <div id="sumAllGeomPage" class="container hidden">
+    <h1>Sum of All Terms</h1>
+    <form id="sumAllGeomForm">
+      <label for="a1GeomSum">First term (a₁):</label>
+      <input type="number" id="a1GeomSum" required>
+      <label for="rGeomSum">Common ratio (r):</label>
+      <input type="number" id="rGeomSum" required>
+      <label for="nGeomSum">Number of terms (n):</label>
+      <input type="number" id="nGeomSum" required>
+      <button type="button" onclick="calculateSumAllGeom()">Calculate</button>
+    </form>
+    <div id="resultSumAllGeom" class="result"></div>
+    <div id="solutionSumAllGeom" class="solution hidden">
+      <p>Formula: S = a₁ * (r^n - 1) / (r - 1)</p>
+      <p>Where:</p>
+      <p>S = Sum of all terms, a₁ = First term, r = Common ratio, n = Number of terms</p>
+      <p>Substitute the values into the formula:</p>
+      <p>S = First term * ((Common ratio^Number of terms - 1) / (Common ratio - 1))</p>
+    </div>
+    <button class="back-button" onclick="showPage('geometricPage')">Back</button>
+  </div>
+
+  <script>
+    function showPage(pageId) {
+      document.querySelectorAll('.container').forEach(container => {
+        container.classList.add('hidden');
+      });
+      document.getElementById(pageId).classList.remove('hidden');
+    }
+
+    function calculateTerm() {
+      const a1 = parseFloat(document.getElementById('a1Term').value);
+      const d = parseFloat(document.getElementById('dTerm').value);
+      const n = parseInt(document.getElementById('nTerm').value);
+      const result = a1 + (n - 1) * d;
+      document.getElementById('resultTerm').innerHTML = `
+        <p>Term number ${n}: <span class="answer">${result}</span></p>
+      `;
+      document.getElementById('solutionTerm').classList.remove('hidden');
+      revealSolution('solutionTerm');
+    }
+
+    function calculateD() {
+      const a1 = parseFloat(document.getElementById('a1D').value);
+      const an = parseFloat(document.getElementById('anD').value);
+      const n = parseInt(document.getElementById('nD').value);
+      const d = (an - a1) / (n - 1);
+      document.getElementById('resultD').innerHTML = `
+        <p>Common difference (d): <span class="answer">${d}</span></p>
+      `;
+      document.getElementById('solutionD').classList.remove('hidden');
+      revealSolution('solutionD');
+    }
+
+    function calculateSumAll() {
+      const a1 = parseFloat(document.getElementById('a1Sum').value);
+      const d = parseFloat(document.getElementById('dSum').value);
+      const n = parseInt(document.getElementById('nSum').value);
+      const sum = (n / 2) * (2 * a1 + (n - 1) * d);
+      document.getElementById('resultSumAll').innerHTML = `
+        <p>Sum of all terms: <span class="answer">${sum}</span></p>
+      `;
+      document.getElementById('solutionSumAll').classList.remove('hidden');
+      revealSolution('solutionSumAll');
+    }
+
+    function calculateTermGeom() {
+      const a1 = parseFloat(document.getElementById('a1GeomTerm').value);
+      const r = parseFloat(document.getElementById('rGeomTerm').value);
+      const n = parseInt(document.getElementById('nGeomTerm').value);
+      const result = a1 * Math.pow(r, n - 1);
+      document.getElementById('resultTermGeom').innerHTML = `
+        <p>Term number ${n}: <span class="answer">${result}</span></p>
+      `;
+      document.getElementById('solutionTermGeom').classList.remove('hidden');
+      revealSolution('solutionTermGeom');
+    }
+
+    function calculateR() {
+      const a1 = parseFloat(document.getElementById('a1R').value);
+      const an = parseFloat(document.getElementById('anR').value);
+      const n = parseInt(document.getElementById('nR').value);
+      const r = Math.pow(an / a1, 1 / (n - 1));
+      document.getElementById('resultR').innerHTML = `
+        <p>Common ratio (r): <span class="answer">${r}</span></p>
+      `;
+      document.getElementById('solutionR').classList.remove('hidden');
+      revealSolution('solutionR');
+    }
+
+    function calculateSumAllGeom() {
+      const a1 = parseFloat(document.getElementById('a1GeomSum').value);
+      const r = parseFloat(document.getElementById('rGeomSum').value);
+      const n = parseInt(document.getElementById('nGeomSum').value);
+      const sum = a1 * (Math.pow(r, n) - 1) / (r - 1);
+      document.getElementById('resultSumAllGeom').innerHTML = `
+        <p>Sum of all terms: <span class="answer">${sum}</span></p>
+      `;
+      document.getElementById('solutionSumAllGeom').classList.remove('hidden');
+      revealSolution('solutionSumAllGeom');
+    }
+
+    function revealSolution(id) {
+      const solution = document.getElementById(id);
+      const paragraphs = solution.querySelectorAll('p');
+      let delay = 0;
+      paragraphs.forEach(paragraph => {
+        paragraph.style.setProperty('--delay', `${delay}s`);
+        delay += 0.5; // Adjust the delay between text reveals
+      });
+    }
+  </script>
+</body>
+</html>
